@@ -94,6 +94,9 @@ const Generator = () => {
             const result = Object.keys(resultObject).reduce((s,item) => s+(`${item}:${resultObject[item]}\n`),'')
             console.log(result)
             setDataResult(result)
+        },
+        checkFieldCondition: function() {
+            setDataResult('OK!!')
         }
     }
 
