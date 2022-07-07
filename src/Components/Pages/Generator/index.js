@@ -56,12 +56,17 @@ const Generator = () => {
 
 
     const [db, setDb] = useState('')
+    const [condition, setCondition] = useState('')
     const [dataInput, setDataInput] = useState('Put data in format: \n\nTable_1\nTable_2\nTable_3\n...')
     const [dataResult, setDataResult] = useState('Result...')
     const rows = 25;
 
     const editDb = (evt) => {
         setDb(evt.target.value)
+    }
+
+    const editCondition = (evt) => {
+        setCondition(evt.target.value)
     }
 
     const editValue = (evt) => {
@@ -74,7 +79,7 @@ const Generator = () => {
 
     const GENERATOR = {
         count: function() {
-            const preResult = dataInput.split('\n').map(item => `select '${item}' as Table_Name, count(*) as CNT from ${db}${item} union`)
+            const preResult = dataInput.split('\n').map(item => `select '${item}' as Table_Name, count(*) as CNT from ${db}${item} ${condition} union`)
             setDataResult(preResult.join('\n'))
         },
         groupFields: function() {
@@ -85,7 +90,7 @@ const Generator = () => {
             preResulttoObjects.map(item => resultObject[item[0]] ? resultObject[item[0]].push(item[1]): resultObject[item[0]]=[item[1]])
 
             const result = Object.keys(resultObject).reduce((s,item) => s+(`${item}:${resultObject[item]}\n`),'')
-            //console.log(result)
+            console.log(result)
             setDataResult(result)
         }
     }
@@ -103,14 +108,14 @@ const Generator = () => {
                     <ButtonMain key={item.id} isActive={item.isActive} onClick={() => mainButtonAction(item.id)}>{item.name}</ButtonMain>
                 )})}
            </ButtonsArea>
-           <StyledSubTitle>Select DB:</StyledSubTitle>
+           <StyledSubTitle>DB:</StyledSubTitle>
            <DbArea rows='1' onChange={editDb}>databasename.</DbArea>
+           <StyledSubTitle>Condition:</StyledSubTitle>
+           <DbArea rows='1' onChange={editCondition}>condition</DbArea>
            <ButtonsArea>
                
            </ButtonsArea>
-           <ButtonsArea>
-               
-           </ButtonsArea>
+           <StyledSubTitle>Initial data:</StyledSubTitle>
            <ButtonsArea>
                <InputArea rows={rows} value={dataInput} onChange={editValue}></InputArea>
                {/* <StartBtn onClick={()=>runGenerator()} disabled={disableRun}>Generate SQL - ></StartBtn> */}
