@@ -33,6 +33,9 @@ const Generator = () => {
         {
             id:5, name: 'SumText', func: 'sumText', isActive: false
         },
+        {
+            id:6, name: 'DuplicationsByPK', func: 'duplicationsByPK', isActive: false
+        },
     ];
 
     const [disableRun, setDisableRun] = useState(true)
@@ -59,7 +62,7 @@ const Generator = () => {
 
     const [db, setDb] = useState('')
     const [condition, setCondition] = useState('')
-    const [dataInput, setDataInput] = useState('Put data in format: \n\nTable_1\nTable_2\nTable_3\n...')
+    const [dataInput, setDataInput] = useState('Put data in format: \n\nTable_1\nTable_2\n...\nTable_N')
     const [dataResult, setDataResult] = useState('Result...')
     const rows = 25;
 
@@ -116,17 +119,14 @@ const Generator = () => {
            <StyledSubTitle>DB:</StyledSubTitle>
            <DbArea rows='1' onChange={editDb}>databasename.</DbArea>
            <StyledSubTitle>Condition:</StyledSubTitle>
-           <DbArea rows='1' onChange={editCondition}>condition</DbArea>
+           <DbArea rows='1' onChange={editCondition}>{`where field =,!=,<> condition`}</DbArea>
            <ButtonsArea>
                
            </ButtonsArea>
            <StyledSubTitle>Initial data:</StyledSubTitle>
            <ButtonsArea>
                <InputArea rows={rows} value={dataInput} onChange={editValue}></InputArea>
-               {/* <StartBtn onClick={()=>runGenerator()} disabled={disableRun}>Generate SQL - ></StartBtn> */}
-
                <StartBtn onClick={()=>runGenerator(selectedFunc)} disabled={disableRun}>Generate SQL - ></StartBtn>
-
                <InputArea rows={rows} value={dataResult}></InputArea>
            </ButtonsArea>
            
