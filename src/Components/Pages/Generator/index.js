@@ -14,16 +14,18 @@ const Generator = () => {
     const BUTTONS  = [
         {
             id:1, name: 'Count', func: 'count', 
-            inpText: 'Put data in format: \n\nTable_1\nTable_2\nTable_3\n...',
+            inpText: 'Put data in format: \n\nTable_1\nTable_2\n...\nTable_N',
             isActive: true
         },
         {
             id:2, name: 'GroupFields', func: 'groupFields', 
-            inpText: 'Put data in format: \n\nTable_1 Field_1\nTable_1 Field_2\nTable_1 Field_N\nTable_N Field_1\nTable_N Field_N\n...', 
+            inpText: 'Put data in format: \n\nTable_1 Field_1\nTable_1 Field_2\n...\nTable_1 Field_N\n...\nTable_N Field_1\nTable_N Field_2\n...\nTable_N Field_N', 
             isActive: false
         },
         {
-            id:3, name: 'CheckCondition', func: 'checkCondition', isActive: false
+            id:3, name: 'CheckFieldCondition', func: 'checkFieldCondition', 
+            inpText: 'Put data in format:\n\nTable_Name\nField_1\nField_2\n...\nField_N',
+            isActive: false
         },
         {
             id:4, name: 'SumNumber', func: 'sumNumber', isActive: false
