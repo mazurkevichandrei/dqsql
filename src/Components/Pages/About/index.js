@@ -1,10 +1,15 @@
 import React from 'react';
 
+//Components
+import Main from '../../Styled/styledMain';
+import StyledSubTitle from '../../Styled/styledSubTitle';
 
 
 const About = () => {
     return(
-      <h1>About</h1>
+      <Main>
+        <StyledSubTitle>About</StyledSubTitle>
+      </Main>
     )
 }
 
