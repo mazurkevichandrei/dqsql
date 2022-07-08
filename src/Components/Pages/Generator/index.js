@@ -34,7 +34,9 @@ const Generator = () => {
             id:5, name: 'SumText', func: 'sumText', isActive: false
         },
         {
-            id:6, name: 'DuplicationsByPK', func: 'duplicationsByPK', isActive: false
+            id:6, name: 'DuplicationsByPK', func: 'duplicationsByPK', 
+            inpText: 'Put data in format:\n\nTable_name\nPK_field_1\nPK_field_2\n...\nPK_field_N',
+            isActive: false
         },
     ];
 
@@ -84,7 +86,7 @@ const Generator = () => {
 
     const GENERATOR = {
         count: function() {
-            const preResult = dataInput.split('\n').map(item => `select '${item}' as Table_Name, count(*) as CNT from ${db}${item} ${condition} union`)
+            const preResult = dataInput.split('\n').map(item => `SELECT '${item}' as Table_Name, COUNT(*) as CNT FROM ${db}${item} ${condition} union`)
             setDataResult(preResult.join('\n'))
         },
         groupFields: function() {
@@ -100,6 +102,12 @@ const Generator = () => {
         },
         checkFieldCondition: function() {
             setDataResult('OK!!')
+        },
+        duplicationsByPK: function() {
+            const preResult = dataInput.split('\n')
+            const table = preResult.shift()
+            const result = `SELECT\n'${table}' AS table_name,\nCOUNT(*) as cnt_all,\nCOUNT(distinct ${preResult}) as count_unic_PK,\n(COUNT(*)-COUNT(distinct ${preResult}))AS diff \nFROM ${db}${table}`
+            setDataResult(result)
         }
     }
 
