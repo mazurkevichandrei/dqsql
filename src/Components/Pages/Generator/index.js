@@ -15,28 +15,40 @@ const Generator = () => {
         {
             id:1, name: 'Count', func: 'count', 
             inpText: 'Put data in format: \n\nTable_1\nTable_2\n...\nTable_N',
-            isActive: true
+            isActive: true, typeOfInitialData: 'Tables',
+            tableFieldIsVisible: false
         },
         {
             id:2, name: 'GroupFields', func: 'groupFields', 
             inpText: 'Put data in format: \n\nTable_1 Field_1\nTable_1 Field_2\n...\nTable_1 Field_N\n...\nTable_N Field_1\nTable_N Field_2\n...\nTable_N Field_N', 
-            isActive: false
+            isActive: false, typeOfInitialData: 'Tables Fields',
+            tableFieldIsVisible: false
         },
         {
             id:3, name: 'CheckFieldCondition', func: 'checkFieldCondition', 
             inpText: 'Put data in format:\n\nTable_Name\nField_1\nField_2\n...\nField_N',
-            isActive: false
+            isActive: false, 
+            typeOfInitialData: 'Fields',
+            tableFieldIsVisible: true
         },
         {
-            id:4, name: 'SumNumber', func: 'sumNumber', isActive: false
+            id:4, name: 'SumNumber', func: 'sumNumber', 
+            isActive: false,
+            typeOfInitialData: 'Fields',
+            tableFieldIsVisible: true
         },
         {
-            id:5, name: 'SumText', func: 'sumText', isActive: false
+            id:5, name: 'SumText', func: 'sumText', 
+            isActive: false,
+            typeOfInitialData: 'Fields',
+            tableFieldIsVisible: true
         },
         {
             id:6, name: 'DuplicationsByPK', func: 'duplicationsByPK', 
-            inpText: 'Put data in format:\n\nTable_name\nPK_field_1\nPK_field_2\n...\nPK_field_N',
-            isActive: false
+            inpText: 'Put data in format:\n\nPK_field_1\nPK_field_2\n...\nPK_field_N',
+            isActive: false, 
+            typeOfInitialData: 'Fields',
+            tableFieldIsVisible: true
         },
     ];
 
@@ -44,6 +56,8 @@ const Generator = () => {
 
     const [btn, setBtn] = useState(BUTTONS)
     const [selectedFunc, setSelectedFunc] = useState('count')
+    const [typeOfInitialData, setTypeOfInitialData] = useState('Tables')
+    const [tableFieldIsVisible, setTableFieldIsVisible] = useState(false)
 
     const mainButtonAction = (id) =>{
         const updBtns = BUTTONS.map(
@@ -57,6 +71,8 @@ const Generator = () => {
         const [funcName] = BUTTONS.filter(item => item.id === id)
         setSelectedFunc(funcName.func)
         setDataInput(funcName.inpText)
+        setTypeOfInitialData(funcName.typeOfInitialData)
+        setTableFieldIsVisible(funcName.tableFieldIsVisible)
         setDisableRun(true)
         setDataResult('Result...')
     }
@@ -64,6 +80,7 @@ const Generator = () => {
 
     const [db, setDb] = useState('')
     const [condition, setCondition] = useState('')
+    const [tableNameInForm, setTableNameInForm] = useState('')
     const [dataInput, setDataInput] = useState('Put data in format: \n\nTable_1\nTable_2\n...\nTable_N')
     const [dataResult, setDataResult] = useState('Result...')
     const rows = 25;
@@ -76,6 +93,10 @@ const Generator = () => {
         setCondition(evt.target.value)
     }
 
+    const editTableNameInForm = (evt) => {
+        setTableNameInForm(evt.target.value)
+    }
+
     const editValue = (evt) => {
         setDataInput(evt.target.value)
         evt.target.value === dataInput ? setDisableRun(true) : setDisableRun(false)
@@ -83,6 +104,8 @@ const Generator = () => {
 
 
     //Generatot
+
+    
 
     const GENERATOR = {
         count: function() {
@@ -104,9 +127,11 @@ const Generator = () => {
             setDataResult('OK!!')
         },
         duplicationsByPK: function() {
+            // const preResult = dataInput.split('\n')
+            // const table = preResult.shift()
+            // const result = `SELECT\n'${table}' AS table_name,\nCOUNT(*) as cnt_all,\nCOUNT(distinct ${preResult}) as count_unic_PK,\n(COUNT(*)-COUNT(distinct ${preResult}))AS diff \nFROM ${db}${table}`
             const preResult = dataInput.split('\n')
-            const table = preResult.shift()
-            const result = `SELECT\n'${table}' AS table_name,\nCOUNT(*) as cnt_all,\nCOUNT(distinct ${preResult}) as count_unic_PK,\n(COUNT(*)-COUNT(distinct ${preResult}))AS diff \nFROM ${db}${table}`
+            const result = `SELECT\n'${tableNameInForm}' AS table_name,\nCOUNT(*) as cnt_all,\nCOUNT(distinct ${preResult}) as count_unic_PK,\n(COUNT(*)-COUNT(distinct ${preResult}))AS diff \nFROM ${db}${tableNameInForm}`
             setDataResult(result)
         }
     }
@@ -128,10 +153,9 @@ const Generator = () => {
            <DbArea rows='1' onChange={editDb}>databasename.</DbArea>
            <StyledSubTitle>Condition:</StyledSubTitle>
            <DbArea rows='1' onChange={editCondition}>{`where field =,!=,<> condition`}</DbArea>
-           <ButtonsArea>
-               
-           </ButtonsArea>
-           <StyledSubTitle>Initial data:</StyledSubTitle>
+            <StyledSubTitle visible={tableFieldIsVisible}>Table:</StyledSubTitle>
+            <DbArea rows='1' onChange={editTableNameInForm} visible={tableFieldIsVisible}>Table_name</DbArea>
+            <StyledSubTitle>{typeOfInitialData}:</StyledSubTitle>
            <ButtonsArea>
                <InputArea rows={rows} value={dataInput} onChange={editValue}></InputArea>
                <StartBtn onClick={()=>runGenerator(selectedFunc)} disabled={disableRun}>Generate SQL - ></StartBtn>
