@@ -16,39 +16,49 @@ const Generator = () => {
             id:1, name: 'Count', func: 'count', 
             inpText: 'Put data in format: \n\nTable_1\nTable_2\n...\nTable_N',
             isActive: true, typeOfInitialData: 'Tables',
-            tableFieldIsVisible: false
+            tableFieldIsVisible: false,
+            fieldValueIsVisible: false,
+            conditionFieldIsVisible: true
         },
+        // {
+        //     id:2, name: 'GroupFields', func: 'groupFields', 
+        //     inpText: 'Put data in format: \n\nTable_1 Field_1\nTable_1 Field_2\n...\nTable_1 Field_N\n...\nTable_N Field_1\nTable_N Field_2\n...\nTable_N Field_N', 
+        //     isActive: false, typeOfInitialData: 'Tables Fields',
+        //     tableFieldIsVisible: false
+        // },
         {
-            id:2, name: 'GroupFields', func: 'groupFields', 
-            inpText: 'Put data in format: \n\nTable_1 Field_1\nTable_1 Field_2\n...\nTable_1 Field_N\n...\nTable_N Field_1\nTable_N Field_2\n...\nTable_N Field_N', 
-            isActive: false, typeOfInitialData: 'Tables Fields',
-            tableFieldIsVisible: false
-        },
-        {
-            id:3, name: 'CheckFieldCondition', func: 'checkFieldCondition', 
-            inpText: 'Put data in format:\n\nTable_Name\nField_1\nField_2\n...\nField_N',
+            id:3, name: 'CheckFieldValue', func: 'checkFieldValue', 
+            inpText: 'Put data in format:\n\nField_1\nField_2\n...\nField_N',
             isActive: false, 
             typeOfInitialData: 'Fields',
-            tableFieldIsVisible: true
+            tableFieldIsVisible: true,
+            fieldValueIsVisible: true,
+            conditionFieldIsVisible: false
         },
         {
             id:4, name: 'SumNumber', func: 'sumNumber', 
             isActive: false,
             typeOfInitialData: 'Fields',
-            tableFieldIsVisible: true
+            tableFieldIsVisible: true,
+            fieldValueIsVisible: false,
+            conditionFieldIsVisible: true
         },
         {
             id:5, name: 'SumText', func: 'sumText', 
             isActive: false,
             typeOfInitialData: 'Fields',
-            tableFieldIsVisible: true
+            tableFieldIsVisible: true,
+            fieldValueIsVisible: false,
+            conditionFieldIsVisible: true
         },
         {
             id:6, name: 'DuplicationsByPK', func: 'duplicationsByPK', 
             inpText: 'Put data in format:\n\nPK_field_1\nPK_field_2\n...\nPK_field_N',
             isActive: false, 
             typeOfInitialData: 'Fields',
-            tableFieldIsVisible: true
+            tableFieldIsVisible: true,
+            fieldValueIsVisible: false,
+            conditionFieldIsVisible: true
         },
     ];
 
@@ -58,6 +68,8 @@ const Generator = () => {
     const [selectedFunc, setSelectedFunc] = useState('count')
     const [typeOfInitialData, setTypeOfInitialData] = useState('Tables')
     const [tableFieldIsVisible, setTableFieldIsVisible] = useState(false)
+    const [fieldValueIsVisible, setfieldValueIsVisible] = useState(false)
+    const [conditionFieldIsVisible, setConditionFieldIsVisible] = useState(true)
 
     const mainButtonAction = (id) =>{
         const updBtns = BUTTONS.map(
@@ -73,6 +85,8 @@ const Generator = () => {
         setDataInput(funcName.inpText)
         setTypeOfInitialData(funcName.typeOfInitialData)
         setTableFieldIsVisible(funcName.tableFieldIsVisible)
+        setfieldValueIsVisible(funcName.fieldValueIsVisible)
+        setConditionFieldIsVisible(funcName.conditionFieldIsVisible)
         setDisableRun(true)
         setDataResult('Result...')
     }
@@ -81,6 +95,7 @@ const Generator = () => {
     const [db, setDb] = useState('')
     const [condition, setCondition] = useState('')
     const [tableNameInForm, setTableNameInForm] = useState('')
+    const [fieldValue, setFieldValue] = useState('')
     const [dataInput, setDataInput] = useState('Put data in format: \n\nTable_1\nTable_2\n...\nTable_N')
     const [dataResult, setDataResult] = useState('Result...')
     const rows = 25;
@@ -91,6 +106,10 @@ const Generator = () => {
 
     const editCondition = (evt) => {
         setCondition(evt.target.value)
+    }
+
+    const editFieldValue = (evt) => {
+        setFieldValue(evt.target.value)
     }
 
     const editTableNameInForm = (evt) => {
@@ -123,15 +142,17 @@ const Generator = () => {
             console.log(result)
             setDataResult(result)
         },
-        checkFieldCondition: function() {
-            setDataResult('OK!!')
+        checkFieldValue: function() {
+            const preResult = dataInput.split('\n').map(item => `SELECT '${item}' as field, COUNT(*) FROM ${db}${tableNameInForm} WHERE ${item} ${fieldValue} union`)
+            setDataResult(preResult.join('\n'))
+            //setDataResult('OK!!')
         },
         duplicationsByPK: function() {
             // const preResult = dataInput.split('\n')
             // const table = preResult.shift()
             // const result = `SELECT\n'${table}' AS table_name,\nCOUNT(*) as cnt_all,\nCOUNT(distinct ${preResult}) as count_unic_PK,\n(COUNT(*)-COUNT(distinct ${preResult}))AS diff \nFROM ${db}${table}`
             const preResult = dataInput.split('\n')
-            const result = `SELECT\n'${tableNameInForm}' AS table_name,\nCOUNT(*) as cnt_all,\nCOUNT(distinct ${preResult}) as count_unic_PK,\n(COUNT(*)-COUNT(distinct ${preResult}))AS diff \nFROM ${db}${tableNameInForm}`
+            const result = `SELECT\n'${tableNameInForm}' AS table_name,\nCOUNT(*) as cnt_all,\nCOUNT(distinct ${preResult}) as count_unic_PK,\n(COUNT(*)-COUNT(distinct ${preResult}))AS diff \nFROM ${db}${tableNameInForm} ${condition}`
             setDataResult(result)
         }
     }
@@ -149,13 +170,21 @@ const Generator = () => {
                     <ButtonMain key={item.id} isActive={item.isActive} onClick={() => mainButtonAction(item.id)}>{item.name}</ButtonMain>
                 )})}
            </ButtonsArea>
+
            <StyledSubTitle>DB:</StyledSubTitle>
            <DbArea rows='1' onChange={editDb}>databasename.</DbArea>
-           <StyledSubTitle>Condition:</StyledSubTitle>
-           <DbArea rows='1' onChange={editCondition}>{`where field =,!=,<> condition`}</DbArea>
+
+           <StyledSubTitle visible={fieldValueIsVisible}>Field value:</StyledSubTitle>
+           <DbArea rows='1' onChange={editFieldValue} visible={fieldValueIsVisible}>is Null,=0,>0...</DbArea>
+
+           <StyledSubTitle visible={conditionFieldIsVisible}>Condition:</StyledSubTitle>
+           <DbArea rows='1' onChange={editCondition} visible={conditionFieldIsVisible}>{`where field =,!=,<> condition`}</DbArea>
+
             <StyledSubTitle visible={tableFieldIsVisible}>Table:</StyledSubTitle>
             <DbArea rows='1' onChange={editTableNameInForm} visible={tableFieldIsVisible}>Table_name</DbArea>
+            
             <StyledSubTitle>{typeOfInitialData}:</StyledSubTitle>
+            
            <ButtonsArea>
                <InputArea rows={rows} value={dataInput} onChange={editValue}></InputArea>
                <StartBtn onClick={()=>runGenerator(selectedFunc)} disabled={disableRun}>Generate SQL - ></StartBtn>
