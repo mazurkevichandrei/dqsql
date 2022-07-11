@@ -37,6 +37,7 @@ const Generator = () => {
         },
         {
             id:4, name: 'SumNumber', func: 'sumNumber', 
+            inpText: 'Put data in format:\n\nField_1\nField_2\n...\nField_N',
             isActive: false,
             typeOfInitialData: 'Fields',
             tableFieldIsVisible: true,
@@ -44,7 +45,8 @@ const Generator = () => {
             conditionFieldIsVisible: true
         },
         {
-            id:5, name: 'SumText', func: 'sumText', 
+            id:5, name: 'SumText', func: 'sumText',
+            inpText: 'Put data in format:\n\nField_1\nField_2\n...\nField_N', 
             isActive: false,
             typeOfInitialData: 'Fields',
             tableFieldIsVisible: true,
@@ -129,7 +131,8 @@ const Generator = () => {
     const GENERATOR = {
         count: function() {
             const preResult = dataInput.split('\n').map(item => `SELECT '${item}' as Table_Name, COUNT(*) as CNT FROM ${db}${item} ${condition} union`)
-            setDataResult(preResult.join('\n'))
+            const result = preResult.join('\n')
+            setDataResult(result.substring(0, result.length-6))
         },
         groupFields: function() {
             const preResult = dataInput.split('\n').map(item => item.replace('	',' ').split(' '))
@@ -139,13 +142,26 @@ const Generator = () => {
             preResulttoObjects.map(item => resultObject[item[0]] ? resultObject[item[0]].push(item[1]): resultObject[item[0]]=[item[1]])
 
             const result = Object.keys(resultObject).reduce((s,item) => s+(`${item}:${resultObject[item]}\n`),'')
-            console.log(result)
+            //console.log(result)
             setDataResult(result)
         },
         checkFieldValue: function() {
-            const preResult = dataInput.split('\n').map(item => `SELECT '${item}' as field, COUNT(*) FROM ${db}${tableNameInForm} WHERE ${item} ${fieldValue} union`)
-            setDataResult(preResult.join('\n'))
+            const preResult = dataInput.split('\n').map(item => `SELECT '${item}' as field, COUNT(*) as cnt FROM ${db}${tableNameInForm} WHERE ${item} ${fieldValue} union`)
+            const result = preResult.join('\n')
+            setDataResult(result.substring(0, result.length-6))
             //setDataResult('OK!!')
+        },
+        sumNumber: function() {
+            const preResult = dataInput.split('\n').map(item => `SUM(NVL(${item},0)) as ${item}`)
+            const resultFields = preResult.join(',\n')
+            const result = `SELECT \n${resultFields}\nFROM ${db}${tableNameInForm} ${condition}`
+            setDataResult(result)
+        },
+        sumText: function() {
+            const preResult = dataInput.split('\n').map(item => `SUM(LENGTH(NVL(${item},0))) as ${item}`)
+            const resultFields = preResult.join(',\n')
+            const result = `SELECT \n${resultFields}\nFROM ${db}${tableNameInForm} ${condition}`
+            setDataResult(result)
         },
         duplicationsByPK: function() {
             // const preResult = dataInput.split('\n')
