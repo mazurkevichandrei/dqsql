@@ -130,9 +130,10 @@ const Generator = () => {
 
     const GENERATOR = {
         count: function() {
-            const preResult = dataInput.split('\n').map(item => `SELECT '${item}' as Table_Name, COUNT(*) as CNT FROM ${db}${item} ${condition} union`)
-            const result = preResult.join('\n')
-            setDataResult(result.substring(0, result.length-6))
+            const preResult = dataInput.split('\n').map(item => `SELECT '${item}' as Table_Name, COUNT(*) as CNT FROM ${db}${item} ${condition}`)
+            const result = preResult.join(' union\n')
+            //setDataResult(result.substring(0, result.length-6))
+            setDataResult(result)
         },
         groupFields: function() {
             const preResult = dataInput.split('\n').map(item => item.replace('	',' ').split(' '))
@@ -146,9 +147,10 @@ const Generator = () => {
             setDataResult(result)
         },
         checkFieldValue: function() {
-            const preResult = dataInput.split('\n').map(item => `SELECT '${item}' as field, COUNT(*) as cnt FROM ${db}${tableNameInForm} WHERE ${item} ${fieldValue} union`)
-            const result = preResult.join('\n')
-            setDataResult(result.substring(0, result.length-6))
+            const preResult = dataInput.split('\n').map(item => `SELECT '${item}' as field, COUNT(*) as cnt FROM ${db}${tableNameInForm} WHERE ${item} ${fieldValue}`)
+            const result = preResult.join(' union\n')
+            //setDataResult(result.substring(0, result.length-6))
+            setDataResult(result)
             //setDataResult('OK!!')
         },
         sumNumber: function() {
