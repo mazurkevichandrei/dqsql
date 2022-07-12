@@ -6,7 +6,7 @@ const ButtonsArea = styled.div`
     width: 100%;
     justify-content: flex-start;
     // border: 1px solid green;
-    padding: 10px;
+    padding: 10px 0;
     box-sizing: border-box;
 `;
 

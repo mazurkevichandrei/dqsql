@@ -4,7 +4,10 @@ import React, {useContext,useState} from 'react';
 import Main from '../../Styled/styledMain';
 import StyledSection from '../../Styled/styledSection';
 import StyledSectionRows from '../../Styled/styledSectionRows';
+import StyledContainerRows from '../../Styled/styledContainerRows';
+import ButtonsCard from './Components/Styled/ButtonsCard';
 import StyledSubTitle from '../../Styled/styledSubTitle';
+import StyledFieldDesc from './Components/Styled/styledFieldDesc';
 import ButtonsArea from './Components/Styled/ButtonsArea';
 import ButtonMain from './Components/Styled/ButtonMain';
 import DbArea from './Components/Styled/DbArea';
@@ -194,21 +197,23 @@ const Generator = () => {
            </StyledSection>
 
 
-           <StyledSection>
-            <StyledSectionRows>
-                <StyledSubTitle>DB:</StyledSubTitle>
-                <DbArea rows='1' onChange={editDb}>databasename.</DbArea>
+           <StyledContainerRows>
+                <ButtonsCard>
+                    <StyledSubTitle>DB:<StyledFieldDesc>(Example: databaseName.schemaName. )</StyledFieldDesc></StyledSubTitle>
+                    <DbArea rows='1' onChange={editDb}></DbArea>
 
-                <StyledSubTitle visible={fieldValueIsVisible}>Field value:</StyledSubTitle>
-                <DbArea rows='1' onChange={editFieldValue} visible={fieldValueIsVisible}>is Null,=0,>0...</DbArea>
+                    <StyledSubTitle visible={tableFieldIsVisible}>Table:<StyledFieldDesc>(Example: TableName )</StyledFieldDesc></StyledSubTitle>
+                    <DbArea rows='1' onChange={editTableNameInForm} visible={tableFieldIsVisible}></DbArea>
+                </ButtonsCard>
+                <ButtonsCard>
+                    <StyledSubTitle visible={fieldValueIsVisible}>Field value:<StyledFieldDesc>(Example: is Null,=0,>0... )</StyledFieldDesc></StyledSubTitle>
+                    <DbArea rows='1' onChange={editFieldValue} visible={fieldValueIsVisible}></DbArea>
 
-                <StyledSubTitle visible={conditionFieldIsVisible}>Condition:</StyledSubTitle>
-                <DbArea rows='1' onChange={editCondition} visible={conditionFieldIsVisible}>{`where field =,!=,<> condition`}</DbArea>
+                    <StyledSubTitle visible={conditionFieldIsVisible}>Condition:<StyledFieldDesc>(Example: {`where field =,!=,<> 0...`} )</StyledFieldDesc></StyledSubTitle>
+                    <DbArea rows='1' onChange={editCondition} visible={conditionFieldIsVisible}></DbArea>
+                </ButtonsCard>
                 
-                    <StyledSubTitle visible={tableFieldIsVisible}>Table:</StyledSubTitle>
-                    <DbArea rows='1' onChange={editTableNameInForm} visible={tableFieldIsVisible}>Table_name</DbArea>
-            </StyledSectionRows>
-            </StyledSection>
+            </StyledContainerRows>
 
 
             <StyledSection>
