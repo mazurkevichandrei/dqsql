@@ -2,6 +2,8 @@ import React, {useContext,useState} from 'react';
 
 //Template components:
 import Main from '../../Styled/styledMain';
+import StyledSection from '../../Styled/styledSection';
+import StyledSectionRows from '../../Styled/styledSectionRows';
 import StyledSubTitle from '../../Styled/styledSubTitle';
 import ButtonsArea from './Components/Styled/ButtonsArea';
 import ButtonMain from './Components/Styled/ButtonMain';
@@ -182,32 +184,41 @@ const Generator = () => {
 
     return(
        <Main>
+           <StyledSection>
            <StyledSubTitle>Select function:</StyledSubTitle>
            <ButtonsArea>
                 {btn.map(item => {return(
                     <ButtonMain key={item.id} isActive={item.isActive} onClick={() => mainButtonAction(item.id)}>{item.name}</ButtonMain>
                 )})}
            </ButtonsArea>
+           </StyledSection>
 
-           <StyledSubTitle>DB:</StyledSubTitle>
-           <DbArea rows='1' onChange={editDb}>databasename.</DbArea>
 
-           <StyledSubTitle visible={fieldValueIsVisible}>Field value:</StyledSubTitle>
-           <DbArea rows='1' onChange={editFieldValue} visible={fieldValueIsVisible}>is Null,=0,>0...</DbArea>
+           <StyledSection>
+            <StyledSectionRows>
+                <StyledSubTitle>DB:</StyledSubTitle>
+                <DbArea rows='1' onChange={editDb}>databasename.</DbArea>
 
-           <StyledSubTitle visible={conditionFieldIsVisible}>Condition:</StyledSubTitle>
-           <DbArea rows='1' onChange={editCondition} visible={conditionFieldIsVisible}>{`where field =,!=,<> condition`}</DbArea>
+                <StyledSubTitle visible={fieldValueIsVisible}>Field value:</StyledSubTitle>
+                <DbArea rows='1' onChange={editFieldValue} visible={fieldValueIsVisible}>is Null,=0,>0...</DbArea>
 
-            <StyledSubTitle visible={tableFieldIsVisible}>Table:</StyledSubTitle>
-            <DbArea rows='1' onChange={editTableNameInForm} visible={tableFieldIsVisible}>Table_name</DbArea>
-            
+                <StyledSubTitle visible={conditionFieldIsVisible}>Condition:</StyledSubTitle>
+                <DbArea rows='1' onChange={editCondition} visible={conditionFieldIsVisible}>{`where field =,!=,<> condition`}</DbArea>
+                
+                    <StyledSubTitle visible={tableFieldIsVisible}>Table:</StyledSubTitle>
+                    <DbArea rows='1' onChange={editTableNameInForm} visible={tableFieldIsVisible}>Table_name</DbArea>
+            </StyledSectionRows>
+            </StyledSection>
+
+
+            <StyledSection>
             <StyledSubTitle>{typeOfInitialData}:</StyledSubTitle>
-            
-           <ButtonsArea>
+            <StyledSectionRows>
                <InputArea rows={rows} value={dataInput} onChange={editValue}></InputArea>
                <StartBtn onClick={()=>runGenerator(selectedFunc)} disabled={disableRun}>Generate SQL - ></StartBtn>
                <InputArea rows={rows} value={dataResult}></InputArea>
-           </ButtonsArea>
+           </StyledSectionRows>
+           </StyledSection>
            
        </Main>
        

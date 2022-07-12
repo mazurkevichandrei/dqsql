@@ -16,7 +16,6 @@ import Generator from './Components/Pages/Generator';
 
 
 function App() {
-
   document.title = 'DQ SQL'
   return (
     <StyledApp>

@@ -16,6 +16,7 @@ const ButtonMain = styled.button`
         opacity: 1;   
     }
     transition: all linear .3s;
+    box-sizing: border-box;
 `;
 
 export default ButtonMain;
