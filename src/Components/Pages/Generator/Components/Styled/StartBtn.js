@@ -15,6 +15,7 @@ const StartBtn = styled.button`
     ${props => props.disabled===true && css `
     background: grey;
     `};
+    margin-top: 5px;
 `;
 
 export default StartBtn;
