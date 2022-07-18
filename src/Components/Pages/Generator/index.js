@@ -132,6 +132,8 @@ const Generator = () => {
     //Generatot
 
     
+    
+
     const GENERATOR = {
         count: function() {
             const preResult = dataInput.split('\n').map(item => `SELECT '${item}' as Table_Name, COUNT(*) as CNT FROM ${db}${item} ${condition}`)
