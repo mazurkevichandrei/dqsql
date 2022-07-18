@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/dqsql/static/css/main.f566f1b6.css",
+    "main.js": "/dqsql/static/js/main.bf8ca96a.js",
+    "static/js/787.320e5577.chunk.js": "/dqsql/static/js/787.320e5577.chunk.js",
+    "index.html": "/dqsql/index.html",
+    "main.f566f1b6.css.map": "/dqsql/static/css/main.f566f1b6.css.map",
+    "main.bf8ca96a.js.map": "/dqsql/static/js/main.bf8ca96a.js.map",
+    "787.320e5577.chunk.js.map": "/dqsql/static/js/787.320e5577.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f566f1b6.css",
+    "static/js/main.bf8ca96a.js"
+  ]
+}
