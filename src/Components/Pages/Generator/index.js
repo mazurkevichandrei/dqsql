@@ -166,7 +166,7 @@ const Generator = () => {
             setDataResult(result)
         },
         sumText: function() {
-            const preResult = dataInput.split('\n').map(item => `SUM(LENGTH(NVL(${item},0))) as ${item}`)
+            const preResult = dataInput.split('\n').map(item => `SUM(NVL(LENGTH(${item}),0)) as ${item}`)
             const resultFields = preResult.join(',\n')
             const result = `SELECT \n${resultFields}\nFROM ${db}${tableNameInForm} ${condition}`
             setDataResult(result)
