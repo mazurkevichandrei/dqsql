@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/dqsql/static/css/main.f566f1b6.css",
-    "main.js": "/dqsql/static/js/main.5e90dcd7.js",
+    "main.js": "/dqsql/static/js/main.b634160d.js",
     "static/js/787.320e5577.chunk.js": "/dqsql/static/js/787.320e5577.chunk.js",
     "index.html": "/dqsql/index.html",
     "main.f566f1b6.css.map": "/dqsql/static/css/main.f566f1b6.css.map",
-    "main.5e90dcd7.js.map": "/dqsql/static/js/main.5e90dcd7.js.map",
+    "main.b634160d.js.map": "/dqsql/static/js/main.b634160d.js.map",
     "787.320e5577.chunk.js.map": "/dqsql/static/js/787.320e5577.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f566f1b6.css",
-    "static/js/main.5e90dcd7.js"
+    "static/js/main.b634160d.js"
   ]
 }
